@@ -1,0 +1,629 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Monitor Sector Eléctrico - Febrero 2026</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+    <!-- Estilos Corporativos CIER -->
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f1f5f9; /* Slate 100 */
+            color: #1e293b; /* Slate 800 */
+        }
+
+        .chart-container {
+            position: relative;
+            width: 100%;
+            height: 350px;
+            max-height: 400px;
+        }
+        
+        @media (max-width: 768px) {
+            .chart-container { height: 300px; }
+        }
+
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #f1f5f9; }
+        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+
+        .card-hover:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+        }
+        
+        .active-tab {
+            border-bottom: 2px solid #0f766e; /* Teal 700 */
+            color: #0f766e;
+            font-weight: 600;
+        }
+
+        .animate-fade-in {
+            animation: fadeIn 0.5s ease-in-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body class="antialiased selection:bg-teal-100 selection:text-teal-900">
+
+    <!-- Barra de Navegación -->
+    <nav class="sticky top-0 z-50 bg-white border-b border-slate-200 shadow-sm backdrop-blur-md bg-opacity-90">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16">
+                <div class="flex items-center">
+                    <div class="flex-shrink-0 flex items-center gap-2">
+                        <div class="w-8 h-8 bg-teal-700 rounded-lg flex items-center justify-center text-white font-bold">C</div>
+                        <span class="font-bold text-slate-800 text-lg tracking-tight">CIER <span class="text-slate-500 font-normal">| Monitor Febrero 2026</span></span>
+                    </div>
+                </div>
+                <div class="hidden sm:ml-6 sm:flex sm:space-x-8">
+                    <button onclick="switchTab('dashboard')" id="nav-dashboard" class="active-tab inline-flex items-center px-1 pt-1 text-sm font-medium text-gray-900 border-b-2 border-transparent">
+                        Tablero Ejecutivo
+                    </button>
+                    <button onclick="switchTab('regional')" id="nav-regional" class="inline-flex items-center px-1 pt-1 text-sm font-medium text-gray-500 border-b-2 border-transparent hover:border-teal-300">
+                        Pulso Regional
+                    </button>
+                    <button onclick="switchTab('strategy')" id="nav-strategy" class="inline-flex items-center px-1 pt-1 text-sm font-medium text-gray-500 border-b-2 border-transparent hover:border-teal-300">
+                        Estrategia y Riesgos
+                    </button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Contenido Principal -->
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+
+        <!-- Header Contextual -->
+        <div class="mb-8">
+            <p class="text-sm font-semibold text-teal-600 uppercase tracking-wider">Uso Reservado - CIER Internacional</p>
+            <h1 class="text-3xl md:text-4xl font-bold text-slate-900 mt-1">Monitor sobre la Situación Actual del Sector Eléctrico</h1>
+            <p class="mt-2 text-lg text-slate-600 max-w-3xl">
+                Reporte estratégico basado en 383 noticias analizadas. Foco en la resiliencia climática andina y la demanda impulsada por centros de datos.
+            </p>
+        </div>
+
+        <!-- SECCIÓN 1: TABLERO EJECUTIVO -->
+        <div id="view-dashboard" class="space-y-8 animate-fade-in block">
+            
+            <!-- Tarjetas de Métricas -->
+            <section>
+                <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
+                    <!-- Clima -->
+                    <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-6 card-hover transition-all-300 relative overflow-hidden">
+                        <div class="absolute top-0 right-0 w-16 h-16 bg-amber-100 rounded-bl-full -mr-8 -mt-8"></div>
+                        <h3 class="text-sm font-medium text-slate-500 mb-2">Sentimiento Sectorial</h3>
+                        <div class="flex items-baseline">
+                            <span class="text-4xl font-bold text-slate-800">Alerta</span>
+                            <span class="ml-2 text-sm text-amber-600 font-medium">Prob. Climáticos</span>
+                        </div>
+                        <p class="text-xs text-slate-500 mt-3">Impacto El Niño: Perú transfiere US$ 180M al fondo de continuidad para evitar la parálisis de 981 obras de infraestructura.</p>
+                    </div>
+
+                    <!-- Tecnologías -->
+                    <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-6 card-hover transition-all-300">
+                        <h3 class="text-sm font-medium text-slate-500 mb-2">Convergencia Técnica</h3>
+                        <div class="flex items-baseline">
+                            <span class="text-2xl font-bold text-teal-700">Solar vs BESS</span>
+                        </div>
+                        <p class="text-xs text-slate-500 mt-3">Diferencia mínima de interés: Solar FV (130) y Almacenamiento (124). BESS es ahora el habilitador crítico de red.</p>
+                    </div>
+
+                    <!-- Inductores -->
+                    <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-6 card-hover transition-all-300">
+                        <h3 class="text-sm font-medium text-slate-500 mb-2">Driver Principal</h3>
+                        <div class="flex items-baseline">
+                            <span class="text-2xl font-bold text-blue-700">Demanda Industrial</span>
+                        </div>
+                        <p class="text-xs text-slate-500 mt-3">Centros de Datos (17 menciones) lideran el crecimiento de la demanda que presiona la infraestructura de distribución.</p>
+                    </div>
+
+                    <!-- Negocios -->
+                    <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-6 card-hover transition-all-300">
+                        <h3 class="text-sm font-medium text-slate-500 mb-2">Modelo de Negocio</h3>
+                        <div class="flex items-baseline">
+                            <span class="text-2xl font-bold text-slate-800">Utility Integrada</span>
+                        </div>
+                        <p class="text-xs text-slate-500 mt-3">El modelo tradicional concentra el 78.5% de la dimensión de negocios ante la escala de inversión requerida en redes.</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Gráficos Estadísticos -->
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                <!-- Tecnologías DIM-B -->
+                <div class="bg-white p-6 rounded-xl shadow-sm border border-slate-200">
+                    <h3 class="text-lg font-bold text-slate-800 mb-4">Ranking de Tecnologías (Menciones DIM-B)</h3>
+                    <div class="chart-container">
+                        <canvas id="techChart"></canvas>
+                    </div>
+                </div>
+                <!-- Modelos DIM-A -->
+                <div class="bg-white p-6 rounded-xl shadow-sm border border-slate-200">
+                    <h3 class="text-lg font-bold text-slate-800 mb-4">Modelos de Negocio (Menciones DIM-A)</h3>
+                    <div class="chart-container">
+                        <canvas id="businessChart"></canvas>
+                    </div>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                <!-- Share of Voice -->
+                <div class="lg:col-span-2 bg-white p-6 rounded-xl shadow-sm border border-slate-200">
+                    <h3 class="text-lg font-bold text-slate-800 mb-4">Share of Voice por País (Frecuencia en Noticias)</h3>
+                    <div class="chart-container">
+                        <canvas id="countryChart"></canvas>
+                    </div>
+                </div>
+                <!-- Inductores DIM-D -->
+                <div class="bg-white p-6 rounded-xl shadow-sm border border-slate-200">
+                    <h3 class="text-lg font-bold text-slate-800 mb-4">Inductores de Expansión (DIM-D)</h3>
+                    <div class="chart-container">
+                        <canvas id="driversChart"></canvas>
+                    </div>
+                    <p class="text-xs text-slate-500 mt-4 text-center">Foco: Crecimiento de Demanda (24 menciones).</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- SECCIÓN 2: PULSO REGIONAL -->
+        <div id="view-regional" class="hidden space-y-8 animate-fade-in">
+            <div class="flex flex-col md:flex-row justify-between items-center mb-6">
+                <div>
+                    <h2 class="text-2xl font-bold text-slate-900">Pulso Regional de Noticias</h2>
+                    <p class="text-slate-600 mt-1 text-sm">Cobertura completa de hitos por país - Febrero 2026.</p>
+                </div>
+                <!-- Filtros -->
+                <div class="mt-4 md:mt-0 flex bg-slate-200 p-1 rounded-lg">
+                    <button onclick="filterRegion('all')" class="region-filter active px-4 py-2 text-sm font-medium rounded-md text-slate-700 bg-white shadow-sm transition-all">Todos</button>
+                    <button onclick="filterRegion('south')" class="region-filter px-4 py-2 text-sm font-medium rounded-md text-slate-600 hover:text-slate-900 transition-all">Sudamérica</button>
+                    <button onclick="filterRegion('north')" class="region-filter px-4 py-2 text-sm font-medium rounded-md text-slate-600 hover:text-slate-900 transition-all">Centro/México</button>
+                </div>
+            </div>
+            <!-- Grid de Países -->
+            <div id="country-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <!-- Se inyecta por JavaScript -->
+            </div>
+        </div>
+
+        <!-- SECCIÓN 3: ESTRATEGIA Y RIESGOS -->
+        <div id="view-strategy" class="hidden space-y-12 animate-fade-in">
+            
+            <!-- Análisis Narrativo de Tendencias -->
+            <section>
+                <div class="bg-slate-800 text-white rounded-xl p-8 shadow-lg">
+                    <h2 class="text-2xl font-bold mb-4 border-b border-slate-600 pb-2 uppercase tracking-tight">Análisis Estratégico de Tendencias</h2>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-10 mt-6">
+                        <div>
+                            <div class="text-teal-400 font-bold mb-2 text-lg">01. Resiliencia Digital</div>
+                            <p class="text-slate-300 text-sm leading-relaxed">
+                                El sector ha pasado de discutir la transición energética a implementar infraestructuras capaces de resistir eventos climáticos extremos. La digitalización, mediante gemelos digitales e IA, ya no es opcional sino una necesidad operativa para gestionar el despacho de fuentes variables ante sequías.
+                            </p>
+                        </div>
+                        <div>
+                            <div class="text-teal-400 font-bold mb-2 text-lg">02. El Despegue del Almacenamiento (BESS)</div>
+                            <p class="text-slate-300 text-sm leading-relaxed">
+                                Con 124 menciones en el último corpus, el almacenamiento masivo ha dejado de ser un complemento para convertirse en el núcleo de la rentabilidad renovable, permitiendo mitigar el <em>curtailment</em> que hoy afecta gravemente a nodos en Chile y el sur de Perú.
+                            </p>
+                        </div>
+                        <div>
+                            <div class="text-teal-400 font-bold mb-2 text-lg">03. Descentralización y Generación Distribuida</div>
+                            <p class="text-slate-300 text-sm leading-relaxed">
+                                Bolivia y Brasil lideran la democratización mediante normativas de media escala (Decreto 5549), reduciendo la presión sobre los sistemas troncales de transmisión que enfrentan retrasos críticos en licencias ambientales.
+                            </p>
+                        </div>
+                        <div>
+                            <div class="text-teal-400 font-bold mb-2 text-lg">04. Valles de Hidrógeno Verde (H2V)</div>
+                            <p class="text-slate-300 text-sm leading-relaxed">
+                                Proyectos piloto en Colombia (transporte pesado) y Perú (clúster en Arequipa) consolidan el uso de excedentes renovables para descarbonizar industrias pesadas y sectores logísticos de difícil abatimiento.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Integración Regional -->
+            <section>
+                <div class="flex items-center gap-3 mb-6">
+                    <div class="w-10 h-1 h-1 bg-teal-600"></div>
+                    <h2 class="text-2xl font-bold text-slate-900 uppercase tracking-tight">Integración Energética Regional</h2>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                    <div class="bg-white border border-slate-200 rounded-lg p-5">
+                        <h4 class="font-bold text-slate-800 flex items-center gap-2">
+                            <span class="w-2 h-2 bg-green-500 rounded-full"></span> Ecuador ↔ Perú
+                        </h4>
+                        <p class="text-xs text-slate-600 mt-2">Aprobación ambiental para la línea de 500 kV. Vital para exportar excedentes hídricos y seguridad mutua ante estiajes.</p>
+                    </div>
+                    <div class="bg-white border border-slate-200 rounded-lg p-5">
+                        <h4 class="font-bold text-slate-800 flex items-center gap-2">
+                            <span class="w-2 h-2 bg-blue-500 rounded-full"></span> Colombia ↔ Panamá
+                        </h4>
+                        <p class="text-xs text-slate-600 mt-2">Avance en pliegos de US$ 800 millones. Punto de unión físico entre el mercado andino y el centroamericano.</p>
+                    </div>
+                    <div class="bg-white border border-slate-200 rounded-lg p-5">
+                        <h4 class="font-bold text-slate-800 flex items-center gap-2">
+                            <span class="w-2 h-2 bg-indigo-500 rounded-full"></span> SIEPAC (EOR)
+                        </h4>
+                        <p class="text-xs text-slate-600 mt-2">Plan para integrar 2.556 MW hacia 2030, reforzando nodos en Guatemala para evacuar excedentes de la PEG-5.</p>
+                    </div>
+                    <div class="bg-white border border-slate-200 rounded-lg p-5">
+                        <h4 class="font-bold text-slate-800 flex items-center gap-2">
+                            <span class="w-2 h-2 bg-yellow-500 rounded-full"></span> Eje Sur (Itaipú)
+                        </h4>
+                        <p class="text-xs text-slate-600 mt-2">Paraguay aumenta demanda (+13.3%), presionando el uso interno de energía y redefiniendo excedentes para Brasil.</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Matriz de Riesgos y Sugerencias C-Suite -->
+            <section class="pb-12">
+                <div class="flex items-center gap-3 mb-6">
+                    <div class="w-10 h-1 h-1 bg-amber-600"></div>
+                    <h2 class="text-2xl font-bold text-slate-900 uppercase">Matriz de Riesgos y Oportunidades</h2>
+                </div>
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                    <!-- Oportunidades Sugeridas -->
+                    <div class="bg-emerald-50 border border-emerald-200 rounded-2xl p-6">
+                        <h3 class="text-emerald-800 font-bold text-lg mb-6 flex items-center gap-2">
+                            <span>▲</span> Iniciativas de Alto Impacto
+                        </h3>
+                        <div class="space-y-4">
+                            <div class="bg-white p-5 rounded-xl shadow-sm border-l-4 border-emerald-500">
+                                <p class="text-sm text-slate-800 font-bold">Arbitraje de Energía con BESS</p>
+                                <p class="text-xs text-slate-600 mt-2">Invertir en almacenamiento masivo en nodos saturados para capturar diferenciales de precios horarios y estabilizar la red.</p>
+                            </div>
+                            <div class="bg-white p-5 rounded-xl shadow-sm border-l-4 border-emerald-500">
+                                <p class="text-sm text-slate-800 font-bold">Data Centers y Nearshoring</p>
+                                <p class="text-xs text-slate-600 mt-2 font-medium">México y Brasil deben paquetizar ofertas híbridas (Solar + BESS) 24/7 para atraer la demanda de IA y Big Tech.</p>
+                            </div>
+                            <div class="bg-white p-5 rounded-xl shadow-sm border-l-4 border-emerald-500">
+                                <p class="text-sm text-slate-800 font-bold">Modernización de Redes Inteligentes (AMI)</p>
+                                <p class="text-xs text-slate-600 mt-2">Implementar programas masivos de medición inteligente para reducir pérdidas no técnicas y mejorar la gestión de demanda.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Alertas y Mitigación -->
+                    <div class="bg-amber-50 border border-amber-200 rounded-2xl p-6">
+                        <h3 class="text-amber-800 font-bold text-lg mb-6 flex items-center gap-2">
+                            <span>⚠️</span> Alertas de Riesgo y Mitigación
+                        </h3>
+                        <div class="space-y-4">
+                            <div class="bg-white p-5 rounded-xl shadow-sm border-l-4 border-amber-500">
+                                <p class="text-sm text-slate-800 font-bold">Cuello de Botella Socioambiental (DIM-F)</p>
+                                <p class="text-xs text-slate-600 mt-2">Tema #1 en regulación (64 menciones). Requiere desplegar equipos sociales senior desde la fase de pre-factibilidad.</p>
+                            </div>
+                            <div class="bg-white p-5 rounded-xl shadow-sm border-l-4 border-amber-500">
+                                <p class="text-sm text-slate-800 font-bold">Riesgo de Estiaje Crítico (Andino)</p>
+                                <p class="text-xs text-slate-600 mt-2">Niveles mínimos en embalses de Ecuador exigen acelerar la entrada de generación térmica de respaldo y respaldo binacional.</p>
+                            </div>
+                            <div class="bg-white p-5 rounded-xl shadow-sm border-l-4 border-amber-500">
+                                <p class="text-sm text-slate-800 font-bold">Incertidumbre Jurídica en Concesiones</p>
+                                <p class="text-xs text-slate-600 mt-2">El debate sobre caducidad de concesiones en Brasil eleva primas de riesgo. Se sugiere auditoría preventiva de niveles de servicio.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+    </main>
+
+    <!-- Footer Corporativo -->
+    <footer class="bg-slate-900 text-slate-400 py-10 mt-12">
+        <div class="max-w-7xl mx-auto px-4 text-center">
+            <p class="font-bold text-slate-200 uppercase tracking-widest">Comisión de Integración Energética Regional (CIER)</p>
+            <p class="text-sm mt-3 font-medium">Monitoreo Sectorial LATAM - Clasificación Consolidada Feb-Marzo 2026.</p>
+            <div class="flex justify-center gap-6 mt-6 opacity-60 text-xs">
+                <span>Fuentes: BNAmericas | Flash CIER | Gobiernos Nacionales</span>
+            </div>
+            <p class="text-[10px] mt-8 opacity-40">© 2026 CIER Internacional. Todos los derechos reservados. El uso de esta información es exclusivo para fines ejecutivos.</p>
+        </div>
+    </footer>
+
+    <!-- LÓGICA DE DATOS Y UI -->
+    <script>
+        // --- BASE DE DATOS (Actualizada con Clasificación Consolidada v4) ---
+        
+        const techData = {
+            labels: ['Solar FV', 'Almacenamiento (BESS)', 'Eólica', 'Hidrógeno Verde', 'Hidroeléctrica', 'Transmisión', 'Gen. Distribuida'],
+            data: [130, 124, 49, 25, 25, 22, 15] // Menciones DIM-B
+        };
+
+        const businessData = {
+            labels: ['Utility Tradicional', 'Off-Grid / Mini-redes', 'PPA Corporativo', 'Gen. Distribuida', 'Pérdidas de Red'],
+            data: [225, 21, 18, 15, 6] // Menciones DIM-A
+        };
+
+        const driversData = {
+            labels: ['Demanda (Industrial)', 'Inv. Distribución', 'Capacidad Gen.', 'Transmisión', 'Cobertura'],
+            data: [10.0, 4.6, 2.9, 0.8, 0.8] // Basado en normalización Max=24 (Demanda)
+        };
+
+        const regionalContent = [
+            {
+                country: "Argentina", region: "south", flag: "🇦🇷", synthesis: "Superávit comercial energético liderado por exportaciones y avance solar en Mendoza.",
+                news: [
+                    { title: "Uno de cada tres dólares del superávit de enero fue por energía", source: "Ámbito", url: "https://www.ambito.com" },
+                    { title: "Genneia inaugura parque solar de 180 MW en Mendoza (u$s 160M)", source: "Ámbito", url: "https://www.ambito.com" },
+                    { title: "YPF Luz incorpora blockchain para contratar energía", source: "Ripplexrp", url: "https://www.ripplexrp.com" }
+                ]
+            },
+            {
+                country: "Bolivia", region: "south", flag: "🇧🇴", synthesis: "Impulso regulatorio a la Generación Distribuida para democratizar el suministro.",
+                news: [
+                    { title: "Decreto 5549 abre paso a Generación Distribuida de hasta 6 MW", source: "Hidrocarburos", url: "https://www.hidrocarburos.gob.bo" }
+                ]
+            },
+            {
+                country: "Brasil", region: "south", flag: "🇧🇷", synthesis: "Liderazgo en expansión de transmisión (UAT) y revitalización del programa nuclear.",
+                news: [
+                    { title: "Brasil demandará US$ 224 mil millones en transmisión a 2035", source: "MME", url: "https://www.mme.gov.br" },
+                    { title: "Energisa proyecta inversión de R$ 7.100 millones para 2026", source: "Energisa", url: "https://www.energisa.com.br" },
+                    { title: "Iberdrola busca control total de Neoenergia vía OPA", source: "Iberdrola", url: "https://www.iberdrola.com" }
+                ]
+            },
+            {
+                country: "Chile", region: "south", flag: "🇨🇱", synthesis: "Dominancia regional en BESS y avance de la carretera eléctrica HVDC.",
+                news: [
+                    { title: "Inicio de construcción línea HVDC Kimal-Lo Aguirre (1.500 km)", source: "CNE", url: "https://www.cne.cl" },
+                    { title: "Acciona firma con CATL provisión de 1 GWh de baterías", source: "Rev. Electricidad", url: "https://www.revistaelectricidad.cl" },
+                    { title: "Grenergy asegura US$ 355M para Oasis de Atacama", source: "Rev. Electricidad", url: "https://www.revistaelectricidad.cl" }
+                ]
+            },
+            {
+                country: "Colombia", region: "south", flag: "🇨🇴", synthesis: "Gestión de precios ante hidrología favorable y pilotos de movilidad con hidrógeno.",
+                news: [
+                    { title: "MinMinas ordena recortes en precios de generación", source: "MinEnergía", url: "https://www.minenergia.gov.co" },
+                    { title: "EPM invertirá US$ 300M en renovación de redes", source: "EPM", url: "https://www.epm.com.co" },
+                    { title: "Piloto de transporte de carga con hidrógeno en Tocancipá", source: "Ecopetrol", url: "https://www.ecopetrol.com.co" }
+                ]
+            },
+            {
+                country: "Costa Rica", region: "north", flag: "🇨🇷", synthesis: "Continuidad del modelo 100% renovable con enfoque en sostenibilidad de largo plazo.",
+                news: [
+                    { title: "Presidente confirma mantenimiento de ruta 100% renovable", source: "Presidencia", url: "https://www.presidencia.go.cr" }
+                ]
+            },
+            {
+                country: "Ecuador", region: "south", flag: "🇪🇨", synthesis: "Enfoque en resiliencia climática y digitalización de zonas rurales (US$ 21M).",
+                news: [
+                    { title: "Inversión de US$ 117M para resiliencia climática en Galápagos", source: "Ambiente", url: "https://www.ambiente.gob.ec" },
+                    { title: "USD 21 millones para fortalecer Puntos Digitales Gratuitos", source: "Telecomunicaciones", url: "https://www.gob.ec" }
+                ]
+            },
+            {
+                country: "El Salvador", region: "north", flag: "🇸🇻", synthesis: "Nuevas fronteras energéticas con exploración de hidrógeno natural.",
+                news: [
+                    { title: "Pre-financiamiento para exploración de hidrógeno natural", source: "Presidencia", url: "https://www.presidencia.gob.sv" }
+                ]
+            },
+            {
+                country: "Guatemala", region: "north", flag: "🇬🇹", synthesis: "Éxito masivo de la licitación PEG-5 consolidando el corredor centroamericano.",
+                news: [
+                    { title: "Histórica licitación PEG-5: Ofertas triplican necesidad", source: "AMM", url: "https://www.amm.org.gt" }
+                ]
+            },
+            {
+                country: "Honduras", region: "north", flag: "🇭🇳", synthesis: "Retos financieros en la estatal ENEE y prórroga de licitaciones de potencia.",
+                news: [
+                    { title: "ENEE prorroga licitación de 1.500 MW hasta junio 2026", source: "ENEE", url: "https://www.enee.hn" }
+                ]
+            },
+            {
+                country: "México", region: "north", flag: "🇲🇽", synthesis: "Apertura de subastas renovables mixtas y crecimiento de centros de datos.",
+                news: [
+                    { title: "Licitación de 7,5 GW bajo esquema mixto con CFE", source: "SENER", url: "https://www.sener.gob.mx" },
+                    { title: "Cox cerrará compra de activos de Iberdrola (US$ 4.200M)", source: "Cox Energy", url: "https://www.coxenergy.com" },
+                    { title: "Terranova inaugura centro de datos en Querétaro", source: "Actis", url: "https://www.act.is" }
+                ]
+            },
+            {
+                country: "Panamá", region: "north", flag: "🇵🇦", synthesis: "Electrificación masiva del Canal de Panamá y descarbonización marítima.",
+                news: [
+                    { title: "Hoja de ruta 2040 proyecta electrificación del Canal", source: "Energía", url: "https://www.energia.gob.pa" }
+                ]
+            },
+            {
+                country: "Paraguay", region: "south", flag: "🇵🇾", synthesis: "Aumento récord de demanda eléctrica (+13.3%) forzando expansión en el Chaco.",
+                news: [
+                    { title: "Ande licita US$ 140M en obras para el Chaco", source: "ANDE", url: "https://www.ande.gov.py" }
+                ]
+            },
+            {
+                country: "Perú", region: "south", flag: "🇵🇪", synthesis: "Transferencias de emergencia ante crisis climática y expansión de transmisión 500kV.",
+                news: [
+                    { title: "Transferencia de US$ 180M a obras con falta de liquidez", source: "MEF", url: "https://www.gob.pe/mef" },
+                    { title: "ProInversión califica a 6 grupos para paquete de transmisión", source: "ProInversión", url: "https://www.proinversion.gob.pe" }
+                ]
+            },
+            {
+                country: "Rep. Dom.", region: "north", flag: "🇩🇴", synthesis: "Hub renovable caribeño con fuerte atracción de financiamiento verde.",
+                news: [
+                    { title: "Autorizan 1.000 MW renovables adicionales para 2026", source: "CNE", url: "https://www.cne.gob.do" },
+                    { title: "EGE Haina registra proyectos bajo Artículo 6 París", source: "EGE Haina", url: "https://www.egehaina.com" },
+                    { title: "Banco Popular financia US$ 600M en renovables", source: "Popular", url: "https://www.popularenlinea.com" }
+                ]
+            },
+            {
+                country: "Uruguay", region: "south", flag: "🇺🇾", synthesis: "Estabilidad absoluta con una matriz eléctrica 96.7% renovable.",
+                news: [
+                    { title: "Matriz eléctrica inició el año con 96,7% renovable", source: "UTE", url: "https://www.ute.com.uy" }
+                ]
+            }
+        ];
+
+        // --- INICIALIZACIÓN DE GRÁFICOS (Chart.js) ---
+
+        function initCharts() {
+            Chart.defaults.font.family = "'Inter', sans-serif";
+            Chart.defaults.color = '#64748b';
+
+            // 1. Tecnologías DIM-B
+            new Chart(document.getElementById('techChart'), {
+                type: 'bar',
+                data: {
+                    labels: techData.labels,
+                    datasets: [{
+                        label: 'Número de Menciones',
+                        data: techData.data,
+                        backgroundColor: (ctx) => ctx.raw >= 100 ? '#0f766e' : '#2dd4bf',
+                        borderRadius: 4
+                    }]
+                },
+                options: {
+                    indexAxis: 'y',
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: { legend: { display: false } },
+                    scales: { x: { beginAtZero: true } }
+                }
+            });
+
+            // 2. Modelos de Negocio DIM-A
+            new Chart(document.getElementById('businessChart'), {
+                type: 'doughnut',
+                data: {
+                    labels: businessData.labels,
+                    datasets: [{
+                        data: businessData.data,
+                        backgroundColor: ['#1e40af', '#3b82f6', '#60a5fa', '#93c5fd', '#2563eb'],
+                        borderWidth: 0
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    cutout: '65%',
+                    plugins: { legend: { position: 'right', labels: { boxWidth: 12 } } }
+                }
+            });
+
+            // 3. Share of Voice (Top 7 Países)
+            new Chart(document.getElementById('countryChart'), {
+                type: 'bar',
+                data: {
+                    labels: ['Brasil', 'Chile', 'Perú', 'Colombia', 'México', 'Argentina', 'Rep. Dom.'],
+                    datasets: [{
+                        label: 'Artículos Totales',
+                        data: [35, 29, 24, 21, 15, 12, 11],
+                        backgroundColor: '#6366f1',
+                        borderRadius: 4
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: { y: { beginAtZero: true } }
+                }
+            });
+
+            // 4. Radar Inductores DIM-D
+            new Chart(document.getElementById('driversChart'), {
+                type: 'radar',
+                data: {
+                    labels: driversData.labels,
+                    datasets: [{
+                        label: 'Impacto (Normalizado)',
+                        data: driversData.data,
+                        fill: true,
+                        backgroundColor: 'rgba(20, 184, 166, 0.2)',
+                        borderColor: 'rgb(20, 184, 166)',
+                        pointBackgroundColor: 'rgb(20, 184, 166)',
+                        pointBorderColor: '#fff'
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: { r: { suggestedMin: 0, suggestedMax: 10, angleLines: { display: false } } }
+                }
+            });
+        }
+
+        // --- LÓGICA DE NAVEGACIÓN Y RENDERIZADO ---
+
+        function switchTab(tabId) {
+            ['dashboard', 'regional', 'strategy'].forEach(id => {
+                document.getElementById(`view-${id}`).classList.add('hidden');
+                document.getElementById(`nav-${id}`).classList.remove('active-tab', 'text-gray-900');
+                document.getElementById(`nav-${id}`).classList.add('text-gray-500');
+            });
+            document.getElementById(`view-${tabId}`).classList.remove('hidden');
+            document.getElementById(`nav-${tabId}`).classList.add('active-tab', 'text-gray-900');
+            document.getElementById(`nav-${tabId}`).classList.remove('text-gray-500');
+        }
+
+        function renderCountryCards(filter = 'all') {
+            const grid = document.getElementById('country-grid');
+            grid.innerHTML = '';
+            
+            const filteredData = filter === 'all' 
+                ? regionalContent 
+                : regionalContent.filter(c => c.region === filter);
+            
+            filteredData.sort((a, b) => a.country.localeCompare(b.country));
+
+            filteredData.forEach(country => {
+                const card = document.createElement('div');
+                card.className = 'bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden flex flex-col card-hover transition-all-300 animate-fade-in';
+                card.innerHTML = `
+                    <div class="p-5 border-b border-slate-100 bg-slate-50 flex items-center gap-3">
+                        <span class="text-2xl">${country.flag}</span>
+                        <h3 class="font-bold text-slate-800 text-lg">${country.country}</h3>
+                    </div>
+                    <div class="p-5 flex-grow">
+                        <p class="text-sm text-slate-600 mb-4 italic leading-relaxed">"${country.synthesis}"</p>
+                        <div class="space-y-4">
+                            ${country.news.map(news => `
+                                <div class="flex items-start">
+                                    <div class="mt-1.5 w-1.5 h-1.5 rounded-full bg-teal-500 flex-shrink-0"></div>
+                                    <div class="ml-2">
+                                        <p class="text-xs font-semibold text-slate-800 line-clamp-2">${news.title}</p>
+                                        <a href="${news.url}" target="_blank" class="text-[10px] text-teal-600 uppercase tracking-widest mt-1 hover:underline decoration-teal-300 font-bold flex items-center gap-1">
+                                            ${news.source} <svg xmlns="http://www.w3.org/2000/svg" class="h-2 w-2" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" /></svg>
+                                        </a>
+                                    </div>
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
+                `;
+                grid.appendChild(card);
+            });
+        }
+
+        function filterRegion(region) {
+            document.querySelectorAll('.region-filter').forEach(btn => {
+                btn.classList.remove('bg-white', 'shadow-sm', 'text-slate-700');
+                btn.classList.add('text-slate-600');
+            });
+            const activeBtn = document.querySelector(`.region-filter[onclick="filterRegion('${region}')"]`);
+            activeBtn.classList.add('bg-white', 'shadow-sm', 'text-slate-700');
+            activeBtn.classList.remove('text-slate-600');
+            renderCountryCards(region);
+        }
+
+        // Inicializar al cargar
+        document.addEventListener('DOMContentLoaded', () => {
+            initCharts();
+            renderCountryCards();
+        });
+    </script>
+</body>
+</html>
