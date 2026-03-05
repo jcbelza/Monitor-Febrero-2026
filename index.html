@@ -78,27 +78,26 @@
 <body class="antialiased selection:bg-teal-100 selection:text-teal-900">
 
     <!-- Barra de Navegación -->
-    <nav class="sticky top-0 z-50 bg-white border-b border-slate-200 shadow-sm backdrop-blur-md bg-opacity-90">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex justify-between h-16">
-                <div class="flex items-center">
-                    <div class="flex-shrink-0 flex items-center gap-2">
-                        <img src="https://raw.githubusercontent.com/jcbelza/Monitor-Febrero-2026/main/Logo.png" alt="CIER Logo" class="w-8 h-8 object-contain">
-                        <span class="font-bold text-slate-800 text-lg tracking-tight">CIER <span class="text-slate-500 font-normal">| Monitor Febrero 2026</span></span>
-                    </div>
-                </div>
-                <div class="hidden sm:ml-6 sm:flex sm:space-x-8">
-                    <button onclick="switchTab('dashboard')" id="nav-dashboard" class="active-tab inline-flex items-center px-1 pt-1 text-sm font-medium text-gray-900 border-b-2 border-transparent">
-                        Tablero Ejecutivo
-                    </button>
-                    <button onclick="switchTab('regional')" id="nav-regional" class="inline-flex items-center px-1 pt-1 text-sm font-medium text-gray-500 border-b-2 border-transparent hover:border-teal-300">
-                        Pulso Regional
-                    </button>
-                    <button onclick="switchTab('strategy')" id="nav-strategy" class="inline-flex items-center px-1 pt-1 text-sm font-medium text-gray-500 border-b-2 border-transparent hover:border-teal-300">
-                        Estrategia y Riesgos
-                    </button>
-                </div>
-            </div>
+    <nav style="position:sticky;top:0;z-index:50;background:white;border-bottom:1px solid #e2e8f0;box-shadow:0 1px 3px rgba(0,0,0,0.08);">
+        <!-- Fila logo -->
+        <div style="max-width:80rem;margin:0 auto;padding:0 1rem;display:flex;align-items:center;height:52px;">
+            <img src="https://raw.githubusercontent.com/jcbelza/Monitor-Febrero-2026/main/Logo.png" alt="CIER Logo" style="width:32px;height:32px;object-fit:contain;margin-right:8px;">
+            <span style="font-weight:700;color:#1e293b;font-size:1rem;letter-spacing:-0.01em;">CIER <span style="color:#94a3b8;font-weight:400;">| Monitor Febrero 2026</span></span>
+        </div>
+        <!-- Barra de pestañas: siempre visible, ancho completo -->
+        <div style="display:flex;border-top:1px solid #f1f5f9;width:100%;">
+            <button onclick="switchTab('dashboard')" id="nav-dashboard"
+                style="flex:1;padding:10px 4px;font-size:12px;font-weight:600;color:#0f766e;background:none;border:none;border-bottom:2px solid #0f766e;cursor:pointer;white-space:nowrap;font-family:'Inter',sans-serif;">
+                Tablero Ejecutivo
+            </button>
+            <button onclick="switchTab('regional')" id="nav-regional"
+                style="flex:1;padding:10px 4px;font-size:12px;font-weight:500;color:#64748b;background:none;border:none;border-bottom:2px solid transparent;cursor:pointer;white-space:nowrap;font-family:'Inter',sans-serif;">
+                Pulso Regional
+            </button>
+            <button onclick="switchTab('strategy')" id="nav-strategy"
+                style="flex:1;padding:10px 4px;font-size:12px;font-weight:500;color:#64748b;background:none;border:none;border-bottom:2px solid transparent;cursor:pointer;white-space:nowrap;font-family:'Inter',sans-serif;">
+                Estrategia y Riesgos
+            </button>
         </div>
     </nav>
 
@@ -577,12 +576,16 @@
         function switchTab(tabId) {
             ['dashboard', 'regional', 'strategy'].forEach(id => {
                 document.getElementById(`view-${id}`).classList.add('hidden');
-                document.getElementById(`nav-${id}`).classList.remove('active-tab', 'text-gray-900');
-                document.getElementById(`nav-${id}`).classList.add('text-gray-500');
+                var btn = document.getElementById(`nav-${id}`);
+                btn.style.color = '#64748b';
+                btn.style.borderBottom = '2px solid transparent';
+                btn.style.fontWeight = '500';
             });
             document.getElementById(`view-${tabId}`).classList.remove('hidden');
-            document.getElementById(`nav-${tabId}`).classList.add('active-tab', 'text-gray-900');
-            document.getElementById(`nav-${tabId}`).classList.remove('text-gray-500');
+            var activeBtn = document.getElementById(`nav-${tabId}`);
+            activeBtn.style.color = '#0f766e';
+            activeBtn.style.borderBottom = '2px solid #0f766e';
+            activeBtn.style.fontWeight = '600';
         }
 
         function renderCountryCards(filter = 'all') {
